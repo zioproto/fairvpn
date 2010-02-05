@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 import os
 import re
+import networkx as nx
 
 # Authors: Saverio Proto
 # This software is released under GPL3
@@ -32,7 +33,15 @@ for line in topology_file.readlines():
 				print node
 			print "list of collected links:"
 			for link,etx in links.iteritems():
-				print link + "\t",etx
+				uno,due=link
+				print uno + "\t" + due + "\t",etx
+
+			G=nx.Graph()
+			G.add_edges_from(links)
+			bcdict = nx.betweenness_centrality(G, normalized=False, weighted_edges=False)
+			for el1,el2 in bcdict.iteritems():
+				print "NODE: ",el1, "\t" + "BC",el2
+			
 			break
 		endpoint1=line.split()[0] #IP address of endpoint1
 		endpoint2=line.split()[1] #IP address of endpoint2
@@ -46,8 +55,8 @@ for line in topology_file.readlines():
                                 nodedb.add(endpoint1) 
 		if endpoint2 not in nodedb:
                                 nodedb.add(endpoint2) 
-		if endpoint1 + '\t' + endpoint2 not in links:
-				links[endpoint1 + '\t' +endpoint2] = etx
+		if (endpoint1,endpoint2) not in links:
+				links[(endpoint1,endpoint2)] = etx
 	
 		#print "searching ip: %s and the other ip %s and cost %s" % (endpoint1,endpoint2,etx) 	
 				
