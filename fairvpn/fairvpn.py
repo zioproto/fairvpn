@@ -42,9 +42,6 @@ def average(values):
 
 #MAIN
 
-test = (4.5,4.5,54.5,54.5)
-jn = jain_index(test)
-print "JANE",jn
 #download topology
 #os.system(" wget http://"+bootstrap+":2006 -q -O topology.txt")
 
@@ -67,6 +64,7 @@ for line in topology_file.readlines():
 			for link,etx in links.iteritems():
 				uno,due=link
 				print uno + "\t" + due + "\t",etx
+			print "Collected ",len(nodedb), "Nodes and ",len(links),"links\n"
 
 			G=nx.Graph()
 			G.add_edges_from(links)
@@ -125,11 +123,12 @@ for line in topology_file.readlines():
 					costdict[i]=pldict[i]*fcdict[i]					
 				for k,v in costdict.iteritems():
 					if v == min(costdict.values()):
-						print "selected node is ",k,"\n"
+						print "selected node is ",k,"with cost ",v,"\n"
+						print "OTHER NODES",costdict
 						#update mypl
 						for i in mypl.iterkeys():
 							mypl[i]=min(mypl[i],fwdict[0][k][i]+1)
-						print mypl
+						print "MY CURRENT ROUTING TABLE",mypl
 						
 						pldict[k] = 10000
 						for i in pldict.iterkeys():
