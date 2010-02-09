@@ -93,7 +93,8 @@ for line in topology_file.readlines():
 			fcdict = bcdict.copy()
 			for i in fcdict.iterkeys():
 				fcdict[i]=0		
-
+			
+			# Average path length that entering node would have by selecting the node #node, even considering the already selected nodes
 			pldict = bcdict.copy()
 			for i in pldict.iterkeys():
 				pldict[i] = 0
@@ -106,16 +107,17 @@ for line in topology_file.readlines():
 				print "Round ",i," selecting nodes\n"
 				
 				for node,pl_list in fwdict[0].iteritems():
-					#print "Evaluating NODE: ",node#, "\t" + "Path Lens",pl_list,"\n\n\n"
+					#print "Evaluating NODE: ",node#, "\t" + "Path Lengths",pl_list,"\n\n\n"
 					#SUM Path len of the evaluating node, considering my already existing connections
 					for ip in pl_list:
 						#print "Evaluating NODE:",node, "TO NODE",ip,"MINS",pl_list[ip],mypl[ip],min(pl_list[ip],mypl[ip])
 						if (pldict[node] !=10000):
-							pldict[node]=pldict[node]+min(pl_list[ip],mypl[ip])
-
+							pldict[node]=pldict[node]+min(pl_list[ip]+1,mypl[ip])
+							#print "pldic of ",node, "in for", pldict[node], ip
+					pldict[node]=1.0*pldict[node]/len(pldict)
 					#Calculate fc
-					fcdict[node] = float (1/(1 + math.exp( float( (ncdict[node]- average(ncdict.values()))/alpha) )))
-					#print "FC",fcdict[node]
+					fcdict[node] = float (1/(1 + math.exp( float(-(ncdict[node]- average(ncdict.values()))/alpha) )))
+					print "FC ",fcdict[node],node, "pldic ",pldict[node]
 					
 				#create cost dict
 				costdict = pldict.copy()
