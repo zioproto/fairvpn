@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 import os
+import sys
 import re
 import networkx as nx
 import pygraphviz as pgv
@@ -9,14 +10,34 @@ import math as math
 # This software is released under GPL3
 # Copyright Ninux.org 2010
 
-#This script reads the the txt file from olsrd_txtinfo plug-in and ...
-#Needs wget packages
 
-bootstrap = "127.0.0.1"
+#Configuration
+
+tinc = "tinc -n fairvpn --bypass-security"
+myName = "160_80_103_148"
+
+bootstrap = "160.80.81.106"
 
 fanout = 2
 
 ########################### IMPLEMENTATION #############################
+
+def tincconfheader():
+	os.system("rm tinc.conf")
+	os.system("echo \"Mode = switch\" > tinc.conf")
+	os.system("echo \"Name ="+myName+"\" >> tinc.conf")
+		  	                          
+
+
+
+
+def name2ip(name):
+	ip = name.split('_')[0]+"."+name.split('_')[1]+"."+name.split('_')[2]+"."+name.split('_')[3]
+	return ip
+
+def ip2name(ip):
+	name = ip.split('.')[0]+"_"+ip.split('.')[1]+"_"+ip.split('.')[2]+"_"+ip.split('.')[3]
+	return name
 
 def jain_index(x):
 	
@@ -44,14 +65,33 @@ def average(values):
 #MAIN
 
 #download topology
-#os.system(" wget http://"+bootstrap+":2006 -q -O topology.txt")
-
-apl = {}
+os.system(" wget http://"+bootstrap+"/topology.dot -O topology.dot")
 
 G=nx.Graph()
-GDUE=pgv.AGraph("topology.dot")
-#print "GDUE",GDUE.nodes(),GDUE.edges()
-G.add_edges_from(GDUE.edges())
+if os.path.getsize("topology.dot") == 0:
+
+	print "connect to bootstrap, no other nodes available \n"
+
+	os.system ("echo \"Address = "+bootstrap+"\" > hosts/"+ip2name(bootstrap))
+
+	tincconfheader()
+	os.system ("echo \"ConnectTo = 160_80_81_106 \" >> tinc.conf ")
+	os.system ("tincd --bypass-security -n fairvpn -d2 -D")
+	sys.exit(0)
+	
+Gdot=pgv.AGraph("topology.dot")
+
+print "ciao"
+print Gdot.number_of_nodes()
+if Gdot != None:
+	print "Added nodes ",Gdot.nodes(),"\n"
+	print "Added edges ",Gdot.edges(),"\n"
+if Gdot.nodes() < fanout :
+	#Connect to all nodes in topology
+	print "Connect to all nodes"
+	sys.exit(0)
+
+G.add_edges_from(Gdot.edges())
 
 #Calculate Betweenness Centrality
 bcdict = nx.betweenness_centrality(G, normalized=False, weighted_edges=False)
