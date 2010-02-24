@@ -13,11 +13,9 @@ import math as math
 
 #Configuration
 
-tinc = "tinc -n fairvpn --bypass-security"
+tinc_cmd = "tinc -n fairvpn --bypass-security -d2 -D"
 myName = "160_80_103_148"
-
 bootstrap = "160.80.81.106"
-
 fanout = 2
 
 ########################### IMPLEMENTATION #############################
@@ -27,10 +25,6 @@ def tincconfheader():
 	os.system("echo \"Mode = switch\" > tinc.conf")
 	os.system("echo \"Name ="+myName+"\" >> tinc.conf")
 		  	                          
-
-
-
-
 def name2ip(name):
 	ip = name.split('_')[0]+"."+name.split('_')[1]+"."+name.split('_')[2]+"."+name.split('_')[3]
 	return ip
@@ -75,21 +69,26 @@ if os.path.getsize("topology.dot") == 0:
 	os.system ("echo \"Address = "+bootstrap+"\" > hosts/"+ip2name(bootstrap))
 
 	tincconfheader()
-	os.system ("echo \"ConnectTo = 160_80_81_106 \" >> tinc.conf ")
-	os.system ("tincd --bypass-security -n fairvpn -d2 -D")
+	os.system ("echo \"ConnectTo = "ip2name(bootstrap)"\" >> tinc.conf ")
+	os.system (tinc_cmd)
 	sys.exit(0)
 	
 Gdot=pgv.AGraph("topology.dot")
 
-print "ciao"
 print Gdot.number_of_nodes()
-if Gdot != None:
-	print "Added nodes ",Gdot.nodes(),"\n"
-	print "Added edges ",Gdot.edges(),"\n"
-if Gdot.nodes() < fanout :
+print "Added nodes ",Gdot.nodes(),"\n"
+print "Added edges ",Gdot.edges(),"\n"
+
+if Gdot.number_of_nodes() < fanout :
 	#Connect to all nodes in topology
 	print "Connect to all nodes"
+	tincconfheader()
+	for name in Gdot.nodes():
+		os.system ("echo \"Address = "+name2ip(name)+"\" > hosts/"+name))
+		os.system ("echo \"ConnectTo = "+name+"\" >> tinc.conf ")
+	os.system (tinc_cmd)
 	sys.exit(0)
+	
 
 G.add_edges_from(Gdot.edges())
 
@@ -129,6 +128,9 @@ alpha = float( 1.0 / (1-jain_index(ncdict.values())))
 print "ALPHA",alpha
 
 #Select FANOUT nodes to connect to
+
+ConnectToNodes = []
+
 for i in range(fanout):
 	print "Round ",i," selecting nodes\n"
 	
@@ -152,7 +154,8 @@ for i in range(fanout):
 	for k,v in costdict.iteritems():
 		if v == min(costdict.values()):
 			print "selected node is ",k,"with cost ",v,"\n"
-			print "OTHER NODES",costdict
+			ConnectToNodes.append(k)
+			#print "OTHER NODES",costdict
 			#update mypl
 			for i in mypl.iterkeys():
 				mypl[i]=min(mypl[i],fwdict[0][k][i]+1)
@@ -164,18 +167,12 @@ for i in range(fanout):
 					pldict[i]=0 
 			break
 			
-	
 
 
-
-
-
-
-		
-
-
-print "stop\n\n\n\n"
-
-#for el1,el2 in fwdict[1].iteritems():
-#	print "NODE: ",el1, "\t" + "BC",el2
-
+print "Connect to selected nodes \n"
+tincconfheader()
+for name in ConnectToNodes:
+	os.system ("echo \"Address = "+name2ip(name)+"\" > hosts/"+name))
+	os.system ("echo \"ConnectTo = "+name+"\" >> tinc.conf ")
+os.system (tinc_cmd)
+sys.exit(0)
