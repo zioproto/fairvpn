@@ -21,6 +21,10 @@ fanout = 3
 
 ########################### IMPLEMENTATION #############################
 
+def fixnameandkey()
+	#run after tinconfheader
+	os.system("tincd -n fairvpn -K")
+
 def tincup():
 	os.system("rm tinc-up")
 	os.system("ip link set dev fairvpn up")
@@ -66,6 +70,7 @@ def average(values):
 #MAIN
 
 tincconfheader()
+fixnameandkey()
 tincup()
 
 #download topology
