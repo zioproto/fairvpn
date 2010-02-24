@@ -13,12 +13,19 @@ import math as math
 
 #Configuration
 
-tinc_cmd = "tinc -n fairvpn --bypass-security -d2 -D"
-myName = "160_80_103_148"
+tinc_cmd = "tincd -n fairvpn --bypass-security -d2 -D"
+myName = "x160x80x103x149"
+myOverlayIP = "10.0.30.214"
 bootstrap = "160.80.81.106"
-fanout = 2
+fanout = 3
 
 ########################### IMPLEMENTATION #############################
+
+def tincup():
+	os.system("rm tinc-up")
+	os.system("ip link set dev fairvpn up")
+	os.system("echo \"ip a a dev fairvpn "+myOverlayIP+"/24\" > tinc-up")
+	os.system("chmod +x tinc-up")
 
 def tincconfheader():
 	os.system("rm tinc.conf")
@@ -26,12 +33,12 @@ def tincconfheader():
 	os.system("echo \"Name ="+myName+"\" >> tinc.conf")
 		  	                          
 def name2ip(name):
-	ip = name.split('_')[0]+"."+name.split('_')[1]+"."+name.split('_')[2]+"."+name.split('_')[3]
+	ip = name.split('x')[1]+"."+name.split('x')[2]+"."+name.split('x')[3]+"."+name.split('x')[4]
 	return ip
 
 def ip2name(ip):
-	name = ip.split('.')[0]+"_"+ip.split('.')[1]+"_"+ip.split('.')[2]+"_"+ip.split('.')[3]
-	return name
+	name = ip.split('.')[0]+"x"+ip.split('.')[1]+"x"+ip.split('.')[2]+"x"+ip.split('.')[3]
+	return "x"+name
 
 def jain_index(x):
 	
@@ -58,6 +65,9 @@ def average(values):
 
 #MAIN
 
+tincconfheader()
+tincup()
+
 #download topology
 os.system(" wget http://"+bootstrap+"/topology.dot -O topology.dot")
 
@@ -68,8 +78,7 @@ if os.path.getsize("topology.dot") == 0:
 
 	os.system ("echo \"Address = "+bootstrap+"\" > hosts/"+ip2name(bootstrap))
 
-	tincconfheader()
-	os.system ("echo \"ConnectTo = "ip2name(bootstrap)"\" >> tinc.conf ")
+	os.system ("echo \"ConnectTo = "+ip2name(bootstrap)+"\" >> tinc.conf ")
 	os.system (tinc_cmd)
 	sys.exit(0)
 	
@@ -82,9 +91,8 @@ print "Added edges ",Gdot.edges(),"\n"
 if Gdot.number_of_nodes() < fanout :
 	#Connect to all nodes in topology
 	print "Connect to all nodes"
-	tincconfheader()
 	for name in Gdot.nodes():
-		os.system ("echo \"Address = "+name2ip(name)+"\" > hosts/"+name))
+		os.system ("echo \"Address = "+name2ip(name)+"\" > hosts/"+name)
 		os.system ("echo \"ConnectTo = "+name+"\" >> tinc.conf ")
 	os.system (tinc_cmd)
 	sys.exit(0)
@@ -170,9 +178,8 @@ for i in range(fanout):
 
 
 print "Connect to selected nodes \n"
-tincconfheader()
 for name in ConnectToNodes:
-	os.system ("echo \"Address = "+name2ip(name)+"\" > hosts/"+name))
+	os.system ("echo \"Address = "+name2ip(name)+"\" > hosts/"+name)
 	os.system ("echo \"ConnectTo = "+name+"\" >> tinc.conf ")
 os.system (tinc_cmd)
 sys.exit(0)
