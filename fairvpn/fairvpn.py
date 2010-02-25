@@ -56,7 +56,6 @@ def jain_index(x):
 		sum2=sum2+math.pow(x[i],2)
 	sum2=k*sum2
 	ji = float(sum1/sum2)
-
 	return ji
 
 def average(values):
@@ -141,8 +140,11 @@ for i in fcdict.iterkeys():
 pldict = bcdict.copy()
 for i in pldict.iterkeys():
 	pldict[i] = 0
+try:
+	alpha = float( 1.0 / (1-jain_index(ncdict.values())))
+except:
+	alpha = 999
 
-alpha = float( 1.0 / (1-jain_index(ncdict.values())))
 print "ALPHA",alpha
 
 #Select FANOUT nodes to connect to
