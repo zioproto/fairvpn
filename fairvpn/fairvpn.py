@@ -5,7 +5,8 @@ import re
 import networkx as nx
 import pygraphviz as pgv
 import math as math
-import socket;
+import socket
+import random
 
 # Authors: Saverio Proto
 # This software is released under GPL3
@@ -15,7 +16,8 @@ import socket;
 #Configuration
 
 tinc_cmd = "tincd --config=./ --bypass-security -d2 -D"
-myOverlayIP = "10.0.30.214"
+#myOverlayIP = "10.0.30.214"
+myOverlayIP = "10.%d.%d.%d" % (random.randint(1,254),random.randint(0,255),random.randint(0,255))
 bootstrap = "160.80.81.106"
 fanout = 3
 
@@ -23,7 +25,10 @@ fanout = 3
 
 def fixnameandkey():
 	#run after tinconfheader
-	os.system("tincd --config=./ -K")
+	os.system("""tincd --config=./ -K<<EOF
+
+
+	EOF""")
 
 def tincup():
 	os.system("rm tinc-up")
@@ -35,6 +40,7 @@ def tincconfheader():
 	os.system("mkdir hosts")
 	os.system("echo \"Mode = switch\" > tinc.conf")
 	os.system("echo \"Name ="+myName+"\" >> tinc.conf")
+	os.system("echo \"TunnelServer = yes\" >> tinc.conf")
 		  	                          
 def name2ip(name):
 	ip = name.split('x')[1]+"."+name.split('x')[2]+"."+name.split('x')[3]+"."+name.split('x')[4]
