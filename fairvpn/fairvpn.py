@@ -17,7 +17,7 @@ import random
 
 tinc_cmd = "tincd --config=./ --bypass-security -d2 -D"
 #myOverlayIP = "10.0.30.214"
-myOverlayIP = "10.%d.%d.%d" % (random.randint(1,254),random.randint(0,255),random.randint(0,255))
+myOverlayIP = "10.%d.%d.%d" % (random.randint(1,254),random.randint(1,254),random.randint(1,254))
 bootstrap = "160.80.81.106"
 fanout = 3
 
@@ -32,7 +32,7 @@ def fixnameandkey():
 
 def tincup():
 	os.system("rm tinc-up")
-	os.system("echo \"ip link set dev tap0 up && ip a a dev tap0 "+myOverlayIP+"/24\" > tinc-up")
+	os.system("echo \"ip link set dev tap0 up && ip a a dev tap0 "+myOverlayIP+"/8\" > tinc-up")
 	os.system("chmod +x tinc-up")
 
 def tincconfheader():
