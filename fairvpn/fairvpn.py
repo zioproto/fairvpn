@@ -13,7 +13,7 @@ import math as math
 
 #Configuration
 
-tinc_cmd = "tincd -n fairvpn --bypass-security -d2 -D"
+tinc_cmd = "tincd --config=./ --bypass-security -d2 -D"
 myName = "x160x80x103x149"
 myOverlayIP = "10.0.30.214"
 bootstrap = "160.80.81.106"
@@ -21,18 +21,19 @@ fanout = 3
 
 ########################### IMPLEMENTATION #############################
 
-def fixnameandkey()
+def fixnameandkey():
 	#run after tinconfheader
-	os.system("tincd -n fairvpn -K")
+	os.system("tincd --config=./ -K")
 
 def tincup():
 	os.system("rm tinc-up")
-	os.system("ip link set dev fairvpn up")
-	os.system("echo \"ip a a dev fairvpn "+myOverlayIP+"/24\" > tinc-up")
+	os.system("ip link set dev $INTERFACE up")
+	os.system("echo \"ip a a dev $INTERFACE "+myOverlayIP+"/24\" > tinc-up")
 	os.system("chmod +x tinc-up")
 
 def tincconfheader():
-	os.system("rm tinc.conf")
+	os.system("rm tinc.conf && rm -rf hosts")
+	os.system("mkdir hosts")
 	os.system("echo \"Mode = switch\" > tinc.conf")
 	os.system("echo \"Name ="+myName+"\" >> tinc.conf")
 		  	                          
