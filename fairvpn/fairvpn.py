@@ -19,7 +19,7 @@ tinc_cmd = "tincd --config=./ --bypass-security -d2 -D"
 #myOverlayIP = "10.0.30.214"
 myOverlayIP = "10.%d.%d.%d" % (random.randint(1,254),random.randint(1,254),random.randint(1,254))
 bootstrap = "160.80.81.106"
-fanout = 3
+fanout = 2
 
 ########################### IMPLEMENTATION #############################
 
@@ -36,7 +36,8 @@ def tincup():
 	os.system("chmod +x tinc-up")
 
 def tincconfheader():
-	os.system("rm tinc.conf && rm -rf hosts")
+	os.system("rm tinc.conf")
+	os.system("rm -rf hosts")
 	os.system("mkdir hosts")
 	os.system("echo \"Mode = switch\" > tinc.conf")
 	os.system("echo \"Name ="+myName+"\" >> tinc.conf")
@@ -84,7 +85,8 @@ fixnameandkey()
 tincup()
 
 #download topology
-os.system(" wget http://"+bootstrap+"/topology.dot -O topology.dot")
+os.system("rm topology.dot")
+os.system("wget http://"+bootstrap+"/topology.dot -O topology.dot")
 
 G=nx.Graph()
 if os.path.getsize("topology.dot") == 0:
@@ -185,7 +187,7 @@ for i in range(fanout):
 			#update mypl
 			for i in mypl.iterkeys():
 				mypl[i]=min(mypl[i],fwdict[0][k][i]+1)
-			print "MY CURRENT ROUTING TABLE",mypl
+			#print "MY CURRENT ROUTING TABLE",mypl
 			
 			pldict[k] = 10000
 			for i in pldict.iterkeys():
