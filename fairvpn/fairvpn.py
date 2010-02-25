@@ -5,6 +5,7 @@ import re
 import networkx as nx
 import pygraphviz as pgv
 import math as math
+import socket;
 
 # Authors: Saverio Proto
 # This software is released under GPL3
@@ -14,7 +15,6 @@ import math as math
 #Configuration
 
 tinc_cmd = "tincd --config=./ --bypass-security -d2 -D"
-myName = "x160x80x103x149"
 myOverlayIP = "10.0.30.214"
 bootstrap = "160.80.81.106"
 fanout = 3
@@ -27,8 +27,7 @@ def fixnameandkey():
 
 def tincup():
 	os.system("rm tinc-up")
-	os.system("ip link set dev $INTERFACE up")
-	os.system("echo \"ip a a dev $INTERFACE "+myOverlayIP+"/24\" > tinc-up")
+	os.system("echo \"ip link set dev tap0 up && ip a a dev tap0 "+myOverlayIP+"/24\" > tinc-up")
 	os.system("chmod +x tinc-up")
 
 def tincconfheader():
@@ -69,6 +68,11 @@ def average(values):
     return sum(values, 0.0) / len(values)
 
 #MAIN
+
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.connect(('google.com', 0)) 
+myIP = s.getsockname()[0] 
+myName = ip2name(myIP)
 
 tincconfheader()
 fixnameandkey()
