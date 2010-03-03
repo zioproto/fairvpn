@@ -32,7 +32,7 @@ def fixnameandkey():
 
 def tincup():
 	os.system("rm tinc-up")
-	os.system("echo \"ip link set dev tap0 up && ip a a dev tap0 "+myOverlayIP+"/8\" > tinc-up")
+	os.system("echo \"ip link set dev tap0 up && ip a a dev tap0 "+myOverlayIP+"/8 broadcast 10.255.255.255\" > tinc-up")
 	os.system("chmod +x tinc-up")
 
 def tincconfheader():
@@ -86,30 +86,38 @@ tincup()
 
 #download topology
 os.system("rm topology.dot")
-os.system("wget http://"+bootstrap+"/topology.dot -O topology.dot")
-
+#os.system("wget http://"+bootstrap+"/topology.dot -O topology.dot")
+os.system("telnet "+bootstrap+" 2004 > topology.dot")
+os.system("rsync -av rsync://"+bootstrap+"/fairvpn hosts/")
 G=nx.Graph()
 if os.path.getsize("topology.dot") == 0:
 
+	print "problem downloading topology"
+	sys.exit(0)
+topologyfile = open("topology.dot")
+
+Gdot=pgv.AGraph(topologyfile.readlines()[3:])
+
+print "Number of Nodes: ",Gdot.number_of_nodes()
+print "OK"
+print "nodes ",Gdot.nodes(),"\n"
+print "edges ",Gdot.edges(),"\n"
+
+if Gdot.number_of_nodes() == 0:
 	print "connect to bootstrap, no other nodes available \n"
 
-	os.system ("echo \"Address = "+bootstrap+"\" > hosts/"+ip2name(bootstrap))
+	#os.system ("echo \"Address = "+bootstrap+"\" > hosts/"+ip2name(bootstrap))
 
 	os.system ("echo \"ConnectTo = "+ip2name(bootstrap)+"\" >> tinc.conf ")
 	os.system (tinc_cmd)
 	sys.exit(0)
-	
-Gdot=pgv.AGraph("topology.dot")
 
-print Gdot.number_of_nodes()
-print "Added nodes ",Gdot.nodes(),"\n"
-print "Added edges ",Gdot.edges(),"\n"
 
-if Gdot.number_of_nodes() < fanout :
+if Gdot.number_of_nodes() <= fanout :
 	#Connect to all nodes in topology
 	print "Connect to all nodes"
 	for name in Gdot.nodes():
-		os.system ("echo \"Address = "+name2ip(name)+"\" > hosts/"+name)
+		#os.system ("echo \"Address = "+name2ip(name)+"\" > hosts/"+name)
 		os.system ("echo \"ConnectTo = "+name+"\" >> tinc.conf ")
 	os.system (tinc_cmd)
 	sys.exit(0)
@@ -199,7 +207,7 @@ for i in range(fanout):
 
 print "Connect to selected nodes \n"
 for name in ConnectToNodes:
-	os.system ("echo \"Address = "+name2ip(name)+"\" > hosts/"+name)
-	os.system ("echo \"ConnectTo = "+name+"\" >> tinc.conf ")
+	#os.system ("echo \"Address = "+name2ip(name)+"\" > hosts/"+name)
+	os.system ("echo \"ConnectTo = "+ip2name(name)+"\" >> tinc.conf ")
 os.system (tinc_cmd)
 sys.exit(0)
