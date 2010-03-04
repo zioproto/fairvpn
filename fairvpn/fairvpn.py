@@ -71,10 +71,10 @@ def average(values):
 
 #MAIN
 
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.connect(('google.com', 0)) 
-myIP = s.getsockname()[0] 
-myName = ip2name(myIP)
+#s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+#s.connect(('google.com', 0)) 
+#myIP = s.getsockname()[0] 
+myName = ip2name(myOverlayIP)
 
 tincconfheader()
 fixnameandkey()
