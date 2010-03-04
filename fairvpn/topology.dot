@@ -1,3 +1,7 @@
-digraph {
-	x160x80x81x106 [label = "x160x80x81x106"];
+Trying 160.80.81.106...
+Connected to 160.80.81.106.
+Escape character is '^]'.
+digraph topology
+{
 }
+

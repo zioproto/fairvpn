@@ -7,6 +7,7 @@ import pygraphviz as pgv
 import math as math
 import socket
 import random
+import string
 
 # Authors: Saverio Proto
 # This software is released under GPL3
@@ -16,9 +17,10 @@ import random
 #Configuration
 
 tinc_cmd = "tincd --config=./ --bypass-security -d2 -D"
-#myOverlayIP = "10.0.30.214"
-myOverlayIP = "10.%d.%d.%d" % (random.randint(1,254),random.randint(1,254),random.randint(1,254))
+myOverlayIP = "10.0.30.214"
+#myOverlayIP = "10.%d.%d.%d" % (random.randint(1,254),random.randint(1,254),random.randint(1,254))
 bootstrap = "160.80.81.106"
+bootstrapName = "x10x0x30x1"
 fanout = 2
 
 ########################### IMPLEMENTATION #############################
@@ -96,10 +98,9 @@ if os.path.getsize("topology.dot") == 0:
 	sys.exit(0)
 topologyfile = open("topology.dot")
 
-Gdot=pgv.AGraph(topologyfile.readlines()[3:])
+Gdot=pgv.AGraph(string.join(topologyfile.readlines()[3:],''))
 
 print "Number of Nodes: ",Gdot.number_of_nodes()
-print "OK"
 print "nodes ",Gdot.nodes(),"\n"
 print "edges ",Gdot.edges(),"\n"
 
@@ -108,7 +109,7 @@ if Gdot.number_of_nodes() == 0:
 
 	#os.system ("echo \"Address = "+bootstrap+"\" > hosts/"+ip2name(bootstrap))
 
-	os.system ("echo \"ConnectTo = "+ip2name(bootstrap)+"\" >> tinc.conf ")
+	os.system ("echo \"ConnectTo = "+bootstrapName+"\" >> tinc.conf ")
 	os.system (tinc_cmd)
 	sys.exit(0)
 
@@ -116,9 +117,9 @@ if Gdot.number_of_nodes() == 0:
 if Gdot.number_of_nodes() <= fanout :
 	#Connect to all nodes in topology
 	print "Connect to all nodes"
-	for name in Gdot.nodes():
+	for ip in Gdot.nodes():
 		#os.system ("echo \"Address = "+name2ip(name)+"\" > hosts/"+name)
-		os.system ("echo \"ConnectTo = "+name+"\" >> tinc.conf ")
+		os.system ("echo \"ConnectTo = "+ip2name(ip)+"\" >> tinc.conf ")
 	os.system (tinc_cmd)
 	sys.exit(0)
 	
