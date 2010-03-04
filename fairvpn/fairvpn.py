@@ -15,13 +15,7 @@ import string
 
 
 #Configuration
-
-tinc_cmd = "tincd --config=./ --bypass-security -d2 -D"
-myOverlayIP = "10.0.30.214"
-#myOverlayIP = "10.%d.%d.%d" % (random.randint(1,254),random.randint(1,254),random.randint(1,254))
-bootstrap = "160.80.81.106"
-bootstrapName = "x10x0x30x1"
-fanout = 2
+from config import *
 
 ########################### IMPLEMENTATION #############################
 
