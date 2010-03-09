@@ -1,0 +1,2 @@
+ip link set up dev tap0
+ip a a 10.0.0.254/24 dev tap0
