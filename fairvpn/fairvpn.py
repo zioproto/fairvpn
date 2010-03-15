@@ -53,10 +53,11 @@ def jain_index(x):
 	sum1=0
 	sum2=0
 	i=0
-	sum1=math.fsum(x)
-	sum1=math.pow(sum1,2)
+	#sum1=math.fsum(x)
 	for i in range(k):
+		sum1=sum1+x[i]
 		sum2=sum2+math.pow(x[i],2)
+	sum1=math.pow(sum1,2)
 	sum2=k*sum2
 	ji = float(sum1/sum2)
 	return ji
@@ -95,6 +96,7 @@ topologyfile = open("topology.dot")
 Gdot=pgv.AGraph(string.join(topologyfile.readlines()[3:],''))
 
 print "Number of Nodes: ",Gdot.number_of_nodes()
+print "Number of EDGES: ",Gdot.number_of_edges()
 print "nodes ",Gdot.nodes(),"\n"
 print "edges ",Gdot.edges(),"\n"
 
