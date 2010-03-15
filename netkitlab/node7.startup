@@ -1,2 +1,2 @@
 ip link set up dev eth0
-ip a a 160.80.0.7 dev eth0
+ip a a 160.80.0.7/24 dev eth0
