@@ -1,2 +1,2 @@
 ip link set up dev tap0
-ip a a 10.0.0.254/24 dev tap0
+ip a a 10.0.0.254/8 dev tap0 broadcast 10.255.255.255
