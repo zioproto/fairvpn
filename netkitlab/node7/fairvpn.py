@@ -70,13 +70,64 @@ def average(values):
     """
     return sum(values, 0.0) / len(values)
 
+
+def olsr_config():
+
+	f=open('olsr.conf','w')
+
+	config= """
+	DebugLevel      0
+	IpVersion       4
+
+	Hna4
+	{
+
+	}
+
+	IpcConnect
+	{
+
+	}
+
+	LinkQualityFishEye      0
+
+	LoadPlugin         "olsrd_dot_draw.so.0.3"
+	{
+		PlParam     "accept" "0.0.0.0"
+	}
+
+	LoadPlugin "olsrd_httpinfo.so.0.1"
+	{
+	    PlParam     "Net"    "0.0.0.0 0.0.0.0"
+	}
+
+	LoadPlugin "olsrd_txtinfo.so.0.1"
+	{
+	    PlParam     "Accept"   "0.0.0.0"
+	}
+
+	Interface "tap0"
+	{
+	LinkQualityMult default %.3f
+	}
+
+	""" % (random.random()*0.05+0.95)
+
+	f.write(config)
+	f.close()
+
+	return
+
+
 #MAIN
 
 #s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 #s.connect(('google.com', 0)) 
 #myIP = s.getsockname()[0] 
 myName = ip2name(myOverlayIP)
-
+os.system("rm olsr.conf")
+olsr_config()
+os.system("olsr -f ./olsr.conf")
 tincconfheader()
 fixnameandkey()
 tincup()
@@ -120,7 +171,10 @@ if Gdot.number_of_nodes() <= fanout :
 	sys.exit(0)
 	
 
-G.add_edges_from(Gdot.edges())
+#G.add_edges_from(Gdot.edges())
+for edge in Gdot.edges():
+	temp = (edge[0],edge[1],edge.attr['label'])
+	G.add_weighted_edges_from([temp])
 
 #Calculate Betweenness Centrality
 bcdict = nx.betweenness_centrality(G, normalized=False, weighted_edges=False)
