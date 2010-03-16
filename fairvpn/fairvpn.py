@@ -120,7 +120,10 @@ if Gdot.number_of_nodes() <= fanout :
 	sys.exit(0)
 	
 
-G.add_edges_from(Gdot.edges())
+#G.add_edges_from(Gdot.edges())
+for edge in Gdot.edges():
+	temp = (edge[0],edge[1],edge.attr['label'])
+	G..add_weighted_edges_from([temp])
 
 #Calculate Betweenness Centrality
 bcdict = nx.betweenness_centrality(G, normalized=False, weighted_edges=False)
