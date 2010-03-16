@@ -127,7 +127,7 @@ def olsr_config():
 myName = ip2name(myOverlayIP)
 os.system("rm olsr.conf")
 olsr_config()
-os.system("olsr -f ./olsr.conf")
+os.system("olsrd -f ./olsr.conf")
 tincconfheader()
 fixnameandkey()
 tincup()
