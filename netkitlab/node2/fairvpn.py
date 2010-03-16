@@ -173,7 +173,7 @@ if Gdot.number_of_nodes() <= fanout :
 
 #G.add_edges_from(Gdot.edges())
 for edge in Gdot.edges():
-	temp = (edge[0],edge[1],edge.attr['label'])
+	temp = (edge[0],edge[1],float(edge.attr['label']))
 	G.add_weighted_edges_from([temp])
 
 #Calculate Betweenness Centrality
