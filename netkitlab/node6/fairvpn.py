@@ -76,40 +76,40 @@ def olsr_config():
 	f=open('olsr.conf','w')
 
 	config= """
-	DebugLevel      0
-	IpVersion       4
+DebugLevel      0
+IpVersion       4
+MprCoverage   7
+Hna4
+{
 
-	Hna4
-	{
+}
 
-	}
+IpcConnect
+{
 
-	IpcConnect
-	{
+}
 
-	}
+LinkQualityFishEye      0
 
-	LinkQualityFishEye      0
+LoadPlugin         "olsrd_dot_draw.so.0.3"
+{
+	PlParam     "accept" "0.0.0.0"
+}
 
-	LoadPlugin         "olsrd_dot_draw.so.0.3"
-	{
-		PlParam     "accept" "0.0.0.0"
-	}
+LoadPlugin "olsrd_httpinfo.so.0.1"
+{
+    PlParam     "Net"    "0.0.0.0 0.0.0.0"
+}
 
-	LoadPlugin "olsrd_httpinfo.so.0.1"
-	{
-	    PlParam     "Net"    "0.0.0.0 0.0.0.0"
-	}
+LoadPlugin "olsrd_txtinfo.so.0.1"
+{
+    PlParam     "Accept"   "0.0.0.0"
+}
 
-	LoadPlugin "olsrd_txtinfo.so.0.1"
-	{
-	    PlParam     "Accept"   "0.0.0.0"
-	}
-
-	Interface "tap0"
-	{
-	LinkQualityMult default %.3f
-	}
+Interface "tap0"
+{
+LinkQualityMult default %.3f
+}
 
 	""" % (random.random()*0.05+0.95)
 
