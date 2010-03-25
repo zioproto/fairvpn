@@ -2,4 +2,4 @@ ip link set up dev eth0
 ip a a 160.80.0.6/24 dev eth0
 orig-tc qdisc add dev eth0 root handle 1: htb default 1
 orig-tc class add dev eth0 parent 1: classid 1:1 htb rate 1Mbit ceil 1Mbit
-iperf -s -D
+/usr/local/bin/iperf -s -D
