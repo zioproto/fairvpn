@@ -21,7 +21,7 @@ from config import *
 
 def fixnameandkey():
 	#run after tinconfheader
-	os.system("""tincd --config=./ -K<<EOF
+	os.system(tinc_cmd+""" --config=./ -K<<EOF
 
 
 	EOF""")
