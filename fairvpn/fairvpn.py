@@ -255,10 +255,11 @@ for i in range(fanout):
 			break
 			
 
-
+#TODO: modify here, because ip2name cannot work on planetlab
+#you need to open the hosts file, and lookup the hostname associated to ip
 print "Connect to selected nodes \n"
-for name in ConnectToNodes:
+for ip in ConnectToNodes:
 	#os.system ("echo \"Address = "+name2ip(name)+"\" > hosts/"+name)
-	os.system ("echo \"ConnectTo = "+ip2name(name)+"\" >> tinc.conf ")
+	os.system ("echo \"ConnectTo = "+ip2name(ip)+"\" >> tinc.conf ")
 os.system (tinc_cmd)
 sys.exit(0)
