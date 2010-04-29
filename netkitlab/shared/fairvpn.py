@@ -8,6 +8,7 @@ import math as math
 import socket
 import random
 import string
+from socket import gethostname;
 
 # Authors: Saverio Proto
 # This software is released under GPL3
@@ -106,12 +107,21 @@ LoadPlugin "olsrd_txtinfo.so.0.1"
     PlParam     "Accept"   "0.0.0.0"
 }
 
+LoadPlugin "olsrd_nameservice.so.0.3"
+{
+ 	PlParam "name" "%s.lab"
+  	PlParam "hosts-file" "/etc/hosts"
+   	PlParam "resolv-file" "/etc/resolv.conf"
+	PlParam "interval" "10"
+}
+
 Interface "tap0"
 {
 LinkQualityMult default %.3f
 }
 
-	""" % (random.random()*0.05+0.95)
+	"""%(gethostname() ,(random.random()*0.05+0.95))
+	 
 
 	f.write(config)
 	f.close()
