@@ -9,6 +9,7 @@ import socket
 import random
 import string
 from socket import gethostname;
+import time
 
 # Authors: Saverio Proto
 # This software is released under GPL3
@@ -137,7 +138,6 @@ LinkQualityMult default %.3f
 myName = ip2name(myOverlayIP)
 os.system("rm olsr.conf")
 olsr_config()
-os.system("olsrd -f ./olsr.conf")
 tincconfheader()
 fixnameandkey()
 tincup()
@@ -168,6 +168,8 @@ if Gdot.number_of_nodes() == 0:
 
 	os.system ("echo \"ConnectTo = "+bootstrapName+"\" >> tinc.conf ")
 	os.system (tinc_cmd)
+	time.sleep(5)
+	os.system("olsrd -f ./olsr.conf")
 	sys.exit(0)
 
 
@@ -178,6 +180,8 @@ if Gdot.number_of_nodes() <= fanout :
 		#os.system ("echo \"Address = "+name2ip(name)+"\" > hosts/"+name)
 		os.system ("echo \"ConnectTo = "+ip2name(ip)+"\" >> tinc.conf ")
 	os.system (tinc_cmd)
+	time.sleep(5)
+	os.system("olsrd -f ./olsr.conf")
 	sys.exit(0)
 	
 
@@ -187,7 +191,7 @@ for edge in Gdot.edges():
 	G.add_weighted_edges_from([temp])
 
 #Calculate Betweenness Centrality
-bcdict = nx.betweenness_centrality(G, normalized=False, weighted_edges=False)
+bcdict = nx.betweenness_centrality(G, normalized=False, weighted_edges=True)
 for el1,el2 in bcdict.iteritems():
 	print "NODE: ",el1, "\t" + "BC",el2
 print "\n"
@@ -271,4 +275,6 @@ for name in ConnectToNodes:
 	#os.system ("echo \"Address = "+name2ip(name)+"\" > hosts/"+name)
 	os.system ("echo \"ConnectTo = "+ip2name(name)+"\" >> tinc.conf ")
 os.system (tinc_cmd)
+time.sleep(5)
+os.system("olsrd -f ./olsr.conf")
 sys.exit(0)
