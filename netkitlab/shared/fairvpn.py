@@ -38,16 +38,44 @@ def tincconfheader():
 	os.system("rm -rf hosts")
 	os.system("mkdir hosts")
 	os.system("echo \"Mode = switch\" > tinc.conf")
-	os.system("echo \"Name ="+myName+"\" >> tinc.conf")
+	os.system("echo \"Name ="+gethostname()+"\" >> tinc.conf") 
 	os.system("echo \"TunnelServer = yes\" >> tinc.conf")
 		  	                          
 def name2ip(name):
-	ip = name.split('x')[1]+"."+name.split('x')[2]+"."+name.split('x')[3]+"."+name.split('x')[4]
-	return ip
+	#ip = name.split('x')[1]+"."+name.split('x')[2]+"."+name.split('x')[3]+"."+name.split('x')[4]
+	f=open("/hosts/nodes","r")
+	listsnode=f.readlines()
+	x=listsnode[6:len(listsnode)-2]
+	print "the nodes are:\n"
+	for lines in range(len(x)):
+		indexofspace=x[lines].index('#');
+		#print "la linea e': "
+		l=x[lines][:indexofspace]
+		#print l
+		lind=l.index('\t');
+		#print l[:lind]	# mi separa l indirizzo ip dal resto della stringa
+		if( name == l[lind+1:len(l)]):
+			return l[0:lind]		
+		#print l[lind+1:] # mi separa l'ip corrispondente all ip 
+#	return ip
 
 def ip2name(ip):
-	name = ip.split('.')[0]+"x"+ip.split('.')[1]+"x"+ip.split('.')[2]+"x"+ip.split('.')[3]
-	return "x"+name
+	#name = ip.split('.')[0]+"x"+ip.split('.')[1]+"x"+ip.split('.')[2]+"x"+ip.split('.')[3]
+	f=open("/hosts/nodes","r")
+	listsnode=f.readlines()
+	x=listsnode[6:len(listsnode)-2]
+	for lines in range(len(x)):
+		indexofspace=x[lines].index('#');
+		#print "la linea e': "
+		l=x[lines][:indexofspace]
+		#print l
+		lind=l.index('\t');
+		if( ip == l[0:lind]):
+			print "IP : ",ip," NAME: ",l[lind+1:len(l)]
+			return l[lind+1:len(l)]		
+		#print l[:lind]	# mi separa l indirizzo ip dal resto della stringa
+		#print l[lind+1:] # mi separa l'ip corrispondente all ip 
+	#return "x"+name
 
 def jain_index(x):
 	
@@ -110,7 +138,7 @@ LoadPlugin "olsrd_txtinfo.so.0.1"
 
 LoadPlugin "olsrd_nameservice.so.0.3"
 {
- 	PlParam "name" "%s.lab"
+ 	PlParam "name" "%s"
   	PlParam "hosts-file" "/etc/hosts"
    	PlParam "resolv-file" "/etc/resolv.conf"
 	PlParam "interval" "10"
@@ -135,7 +163,8 @@ LinkQualityMult default %.3f
 #s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 #s.connect(('google.com', 0)) 
 #myIP = s.getsockname()[0] 
-myName = ip2name(myOverlayIP)
+print  "MYOVERLAY IP IS ",myOverlayIP
+#										da riaggiungere				#myName = ip2name(myOverlayIP)
 os.system("rm olsr.conf")
 olsr_config()
 tincconfheader()
@@ -165,7 +194,7 @@ if Gdot.number_of_nodes() == 0:
 	print "connect to bootstrap, no other nodes available \n"
 
 	#os.system ("echo \"Address = "+bootstrap+"\" > hosts/"+ip2name(bootstrap))
-
+	#print "ConnectTo = ", bootstrapName, " tinc.conf"
 	os.system ("echo \"ConnectTo = "+bootstrapName+"\" >> tinc.conf ")
 	os.system (tinc_cmd)
 	time.sleep(5)
@@ -177,6 +206,8 @@ if Gdot.number_of_nodes() <= fanout :
 	#Connect to all nodes in topology
 	print "Connect to all nodes"
 	for ip in Gdot.nodes():
+		print "provo a connettermi al nodo"
+		print ip
 		#os.system ("echo \"Address = "+name2ip(name)+"\" > hosts/"+name)
 		os.system ("echo \"ConnectTo = "+ip2name(ip)+"\" >> tinc.conf ")
 	os.system (tinc_cmd)
