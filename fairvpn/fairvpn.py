@@ -186,7 +186,7 @@ for edge in Gdot.edges():
 	G.add_weighted_edges_from([temp])
 
 #Calculate Betweenness Centrality
-bcdict = nx.betweenness_centrality(G, normalized=False, weighted_edges=False)
+bcdict = nx.betweenness_centrality(G, normalized=False, weighted_edges=True)
 for el1,el2 in bcdict.iteritems():
 	print "NODE: ",el1, "\t" + "BC",el2
 print "\n"
