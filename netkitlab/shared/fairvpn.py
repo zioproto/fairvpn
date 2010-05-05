@@ -21,6 +21,8 @@ from config import *
 
 ########################### IMPLEMENTATION #############################
 
+
+
 def fixnameandkey():
 	#run after tinconfheader
 	os.system(tinc_cmd+""" --config=./ -K<<EOF
@@ -60,8 +62,11 @@ def name2ip(name):
 #	return ip
 
 def ip2name(ip):
-	#name = ip.split('.')[0]+"x"+ip.split('.')[1]+"x"+ip.split('.')[2]+"x"+ip.split('.')[3]
-	f=open("/hosts/nodes","r")
+	name = ip.split('.')[0]+"x"+ip.split('.')[1]+"x"+ip.split('.')[2]+"x"+ip.split('.')[3]
+	return name
+
+def overlayip2name(ip):
+	f=open("./hosts/nodes","r")
 	listsnode=f.readlines()
 	x=listsnode[6:len(listsnode)-2]
 	for lines in range(len(x)):
@@ -209,7 +214,7 @@ if Gdot.number_of_nodes() <= fanout :
 		print "provo a connettermi al nodo"
 		print ip
 		#os.system ("echo \"Address = "+name2ip(name)+"\" > hosts/"+name)
-		os.system ("echo \"ConnectTo = "+ip2name(ip)+"\" >> tinc.conf ")
+		os.system ("echo \"ConnectTo = "+overlayip2name(ip)+"\" >> tinc.conf ")
 	os.system (tinc_cmd)
 	time.sleep(5)
 	os.system("olsrd -f ./olsr.conf")
@@ -304,7 +309,7 @@ for i in range(fanout):
 print "Connect to selected nodes \n"
 for name in ConnectToNodes:
 	#os.system ("echo \"Address = "+name2ip(name)+"\" > hosts/"+name)
-	os.system ("echo \"ConnectTo = "+ip2name(name)+"\" >> tinc.conf ")
+	os.system ("echo \"ConnectTo = "+overlayip2name(name)+"\" >> tinc.conf ")
 os.system (tinc_cmd)
 time.sleep(5)
 os.system("olsrd -f ./olsr.conf")
