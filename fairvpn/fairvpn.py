@@ -266,8 +266,8 @@ for i in range(fanout):
 
 
 print "Connect to selected nodes \n"
-for name in ConnectToNodes:
+for ip in ConnectToNodes:
 	#os.system ("echo \"Address = "+name2ip(name)+"\" > hosts/"+name)
-	os.system ("echo \"ConnectTo = "+ip2name(name)+"\" >> tinc.conf ")
+	os.system ("echo \"ConnectTo = "+ip2name(ip)+"\" >> tinc.conf ")
 os.system (tinc_cmd)
 sys.exit(0)
