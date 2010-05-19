@@ -18,11 +18,11 @@ else:
 	auth['AuthString'] = passwd
 	auth['AuthMethod'] = "password"
 	
-	query="wget 'http://comon.cs.princeton.edu/status/tabulator.cgi?table=table_nodeviewshort&format=nameonly&persite=1&select=resptime>0' -O ./codeploy/nodes.txt"
+	query="wget 'http://comon.cs.princeton.edu/status/tabulator.cgi?table=table_nodeviewshort&format=nameonly&persite=1&select=resptime>0' -O ./nodes.txt"
 	os.system(query)
 	
-	node_list = [line.strip() for line in open("./codeploy/nodes.txt")]
+	node_list = [line.strip() for line in open("./nodes.txt")]
 
-	api_server.AddSliceToNodes(auth,slicenm, node_list)
+	api_server.AddSliceToNodes(auth,slicenm, node_list[0:100])
 
 	print "Added nodes"
