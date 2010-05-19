@@ -18,10 +18,11 @@ else:
 	auth['AuthMethod'] = "password"
 
 	node_ids = api_server.GetSlices(auth,slicenm, ['node_ids'])[0]['node_ids']
-
+	f=open("./nodes.txt","w")
 	for node in api_server.GetNodes(auth, node_ids, ['hostname']):
 		print node['hostname']
-
+		f.write(node['hostname']+"\n")
+	f.close()
 
 
 
