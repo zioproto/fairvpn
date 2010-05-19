@@ -1,8 +1,9 @@
+import os
 import sys
 import xmlrpclib
 
 if(len(sys.argv)<4):
-	print "bad command \ntype :python print_nodes.py <username> <password> <slicename>"
+	print "bad command \ntype :python add_nodes.py <username> <password> <slicename>"
 	sys.exit(1)
 else:
 	
