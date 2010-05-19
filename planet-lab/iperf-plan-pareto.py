@@ -15,10 +15,11 @@ def generatenumber():
 
 
 while(1):
-	f=open("./codeploy/nodes.txt","r")
+	#open file with list of nodes of the slice
+	f=open("nodes.txt","r")
 	x=f.readlines()
-	f.seek(0,0)
-
+	
+	#choose a two casual nodes
 	casual=int(random.randrange(0,len(x)-1))
 	f.close()
 	node1=x[casual]
@@ -31,18 +32,15 @@ while(1):
 
 	node2=x[casual]
 
-
 	print "NODO 2 :",node2
 
-
-
-	
+	#Generate a casual number of bytes	
 	numK=int(generatepareto());
 
-	cmd="ssh -n -T -l uniroma2_fairvpn -i /home/claudio/.ssh/planet-lab.pub "+node1[0:len(node1)-1]+" './iperf -c "+node2[0:len(node2)-1]+" -p 61600 -n "+str(numK)+"M -y C >>out-random.txt'"
-	print "invio "+str(numK)+"Mbyte"
+	cmd="ssh -n -T -l uniroma2_fairvpn "+node1[0:len(node1)-1]+" './iperf -c "+node2[0:len(node2)-1]+" -p 61600 -n "+str(numK)+"M -y C >>out-random.txt'"
+	print "sending "+str(numK)+"Mbyte"
 	os.system(cmd)
-	attesa=generatenumber()*60
-	print "Tra ",str(int(attesa)),"secondi ripartiro"
-	time.sleep(int(attesa))
+	backofftime=generatenumber()*60
+	print "In ",str(int(backofftime)),"seconds the backoff time expires"
+	time.sleep(int(backofftime))
 
