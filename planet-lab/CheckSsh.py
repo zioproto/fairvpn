@@ -1,35 +1,40 @@
 import sys, os, select, paramiko, socket
 
-username =sys.argv[1]
+if(len(sys.argv)<2):
+	print "bad command \ntype :python CheckSsh.py <username>"
+	sys.exit(1)
+else:
 
-privatekeyfile = os.path.expanduser('~/.ssh/planet-lab')
-mykey = paramiko.RSAKey.from_private_key_file(privatekeyfile)
+	username =sys.argv[1]
 
-#read hosts from file
+	privatekeyfile = os.path.expanduser('~/.ssh/planet-lab')
+	mykey = paramiko.RSAKey.from_private_key_file(privatekeyfile)
 
-hosts = []
-goodhosts=[]
+	#read hosts from file
 
-hosts = [line.strip() for line in open("./nodes.txt")]
+	hosts = []
+	goodhosts=[]
+	
+	hosts = [line.strip() for line in open("./nodes.txt")]
 
-print hosts
-print "start"
-for host in hosts:
-	print "connecting to %s" % host
-	try:	
-		s=socket.socket()
-		s.settimeout(1)
-		s.connect((host, 22))
-		t = paramiko.Transport(s)
-		t.connect(username=username,hostkey=None,password=None,pkey=mykey)
-		print t.is_authenticated()
-		if (t.is_authenticated()): 
-			goodhosts.append(host)
-		del t
-	except Exception:
-		print "Not Good"
+	print hosts
+	print "start"
+	for host in hosts:
+		print "connecting to %s" % host
+		try:	
+			s=socket.socket()
+			s.settimeout(1)
+			s.connect((host, 22))
+			t = paramiko.Transport(s)
+			t.connect(username=username,hostkey=None,password=None,pkey=mykey)
+			print t.is_authenticated()
+			if (t.is_authenticated()): 
+				goodhosts.append(host)
+			del t
+		except Exception:
+			print "Not Good"
 
-print goodhosts
+	print goodhosts
 
 filegood = open("./good.txt","w")
 
