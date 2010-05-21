@@ -21,8 +21,10 @@ else:
 	auth['AuthString'] = passwd
 	auth['AuthMethod'] = "password"
 	
-	query="wget 'http://comon.cs.princeton.edu/status/tabulator.cgi?table=table_nodeviewshort&format=nameonly&persite=1&select=resptime>0' -O ./nodes.txt"
-	os.system(query)
+#	query="wget 'http://comon.cs.princeton.edu/status/tabulator.cgi?table=table_nodeviewshort&format=nameonly&persite=1&select=resptime>0' -O ./nodes.txt"
+	query2="wget http://comon.cs.princeton.edu/status/tabulator.cgi?table=table_nodeviewshort&format=nameonly&persite=1&select=(resptime > 0 && 1minload < 2 && liveslices <= 5) && ((drift > 1m || (dns1udp > 80 && dns2udp > 80) || gbfree < 5 || sshstatus > 2h) == 0)' -O ./nodes.txt"
+
+	os.system(query2)
 	
 	node_list = [line.strip() for line in open("./nodes.txt")]
 
