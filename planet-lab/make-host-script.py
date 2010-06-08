@@ -14,7 +14,7 @@ else:
 		nomefile="./hosts/"+linea.strip()+"-down"
 		print nomefile
 		f=open(nomefile,"w")
-		f.write("#!/usr/bin/python \npython recover.py "+linea.strip()+" "+sys.argv[1]);
+		f.write("#!/usr/bin/python \npython recover.py "+linea.strip()+" ../"+sys.argv[1]);
 		f.close()
 
 		# Host script
