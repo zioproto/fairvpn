@@ -1,0 +1,34 @@
+--- protocol_subnet.c.orig	2010-10-04 16:59:13.650159677 +0200
++++ protocol_subnet.c	2010-10-04 17:00:49.802568641 +0200
+@@ -106,20 +106,20 @@
+ 
+ 	/* In tunnel server mode, we should already know all allowed subnets */
+ 
+-	if(tunnelserver) {
+-		logger(LOG_WARNING, "Ignoring unauthorized %s from %s (%s): %s",
+-				"ADD_SUBNET", c->name, c->hostname, subnetstr);
+-		return true;
+-	}
++	//if(tunnelserver) {
++	//	logger(LOG_WARNING, "Ignoring unauthorized %s from %s (%s): %s",
++	//			"ADD_SUBNET", c->name, c->hostname, subnetstr);
++	//	return true;
++	//}
+ 
+ 	/* Ignore if strictsubnets is true, but forward it to others */
+ 
+-	if(strictsubnets) {
+-		logger(LOG_WARNING, "Ignoring unauthorized %s from %s (%s): %s",
+-				"ADD_SUBNET", c->name, c->hostname, subnetstr);
+-		forward_request(c);
+-		return true;
+-	}
++	//if(strictsubnets) {
++	//	logger(LOG_WARNING, "Ignoring unauthorized %s from %s (%s): %s",
++	//			"ADD_SUBNET", c->name, c->hostname, subnetstr);
++	//	forward_request(c);
++	//	return true;
++	//}
+ 
+ 	/* If everything is correct, add the subnet to the list of the owner */
+ 
