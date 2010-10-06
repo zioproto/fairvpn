@@ -202,10 +202,10 @@ if Gdot.number_of_nodes() == 0:
 
 	#os.system ("echo \"Address = "+bootstrap+"\" > hosts/"+ip2name(bootstrap))
 	#print "ConnectTo = ", bootstrapName, " tinc.conf"
+	os.system("/fairvpn/bin/olsrd -f /fairvpn/olsrd.conf")
+	time.sleep(5)
 	os.system ("echo \"ConnectTo = "+bootstrapName+"\" >> tinc.conf ")
 	os.system (tinc_cmd)
-	time.sleep(5)
-	os.system("/fairvpn/bin/olsrd -f /fairvpn/olsrd.conf")
 	sys.exit(0)
 
 
@@ -217,9 +217,9 @@ if Gdot.number_of_nodes() <= fanout :
 		print ip
 		#os.system ("echo \"Address = "+name2ip(name)+"\" > hosts/"+name)
 		os.system ("echo \"ConnectTo = "+overlayip2name(ip)+"\" >> tinc.conf ")
-	os.system (tinc_cmd)
-	time.sleep(5)
 	os.system("/fairvpn/bin/olsrd -f /fairvpn/olsrd.conf")
+	time.sleep(5)
+	os.system (tinc_cmd)
 	sys.exit(0)
 	
 
@@ -312,7 +312,7 @@ print "Connect to selected nodes \n"
 for name in ConnectToNodes:
 	#os.system ("echo \"Address = "+name2ip(name)+"\" > hosts/"+name)
 	os.system ("echo \"ConnectTo = "+overlayip2name(name)+"\" >> tinc.conf ")
-os.system (tinc_cmd)
-time.sleep(5)
 os.system("/fairvpn/bin/olsrd -f /fairvpn/olsrd.conf")
+time.sleep(5)
+os.system (tinc_cmd)
 sys.exit(0)
