@@ -67,7 +67,7 @@ def ip2name(ip):
 	return name
 
 def overlayip2name(ip):
-	f=open("./hosts/nodes","r")
+	f=open("/fairvpn/hosts/nodes","r")
 	listsnode=f.readlines()
 	x=listsnode[6:len(listsnode)-2]
 	for lines in range(len(x)):
@@ -145,8 +145,8 @@ LoadPlugin "/fairvpn/lib/olsrd_txtinfo.so.0.1"
 LoadPlugin "/fairvpn/lib/olsrd_nameservice.so.0.3"
 {
  	PlParam "name" "%s"
-  	PlParam "hosts-file" "/etc/hosts"
-   	PlParam "resolv-file" "/etc/resolv.conf"
+  	PlParam "hosts-file" "/fairvpn/hosts"
+   	PlParam "resolv-file" "/fairvpn/resolv.conf"
 	PlParam "interval" "10"
 }
 
