@@ -42,6 +42,7 @@ def tincconfheader():
 	os.system("echo \"Mode = switch\" > tinc.conf")
 	os.system("echo \"Name ="+gethostname().replace('-','')+"\" >> tinc.conf") 
 	os.system("echo \"TunnelServer = yes\" >> tinc.conf")
+	os.system("mkdir -p /usr/local/var/run/")
 		  	                          
 def name2ip(name):
 	#ip = name.split('x')[1]+"."+name.split('x')[2]+"."+name.split('x')[3]+"."+name.split('x')[4]
