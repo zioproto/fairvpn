@@ -154,7 +154,7 @@ Interface "tap0"
 LinkQualityMult default %.3f
 }
 
-	"""%(gethostname() ,(random.random()*0.05+0.95))
+	"""%(gethostname().replace('-','') ,(random.random()*0.05+0.95))
 	 
 
 	f.write(config)
