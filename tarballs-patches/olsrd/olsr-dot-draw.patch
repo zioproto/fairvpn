@@ -1,0 +1,14 @@
+diff --git a/lib/dot_draw/src/olsrd_dot_draw.c b/lib/dot_draw/src/olsrd_dot_draw.c
+index fef7430..c4ffdb2 100644
+--- olsrd-0.6.0/lib/dot_draw/src/olsrd_dot_draw.c
++++ olsrd-0.6.0/lib/dot_draw/src/olsrd_dot_draw.c
+@@ -303,7 +303,7 @@ dotdraw_write_data(void *foo __attribute__ ((unused))) {
+     if (result > 0)
+       abuf_pull(&outbuffer, result);
+ 
++    if (result <= 0) {
+-    if (result < 0) {
+       /* close this socket and cleanup*/
+       close(outbuffer_socket);
+       abuf_free(&outbuffer);
+
