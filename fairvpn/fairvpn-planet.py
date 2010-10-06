@@ -168,7 +168,8 @@ LinkQualityMult default %.3f
 
 #s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 #s.connect(('google.com', 0)) 
-#myIP = s.getsockname()[0] 
+#myIP = s.getsockname()[0]
+myOverlayIP = "10.%d.%d.%d" % (random.randint(1,254),random.randint(1,254),random.randint(1,254))
 print  "MYOVERLAY IP IS ",myOverlayIP
 #										da riaggiungere				#myName = ip2name(myOverlayIP)
 os.system("rm olsr.conf")
