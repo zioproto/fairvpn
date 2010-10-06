@@ -45,7 +45,7 @@ def tincconfheader():
 		  	                          
 def name2ip(name):
 	#ip = name.split('x')[1]+"."+name.split('x')[2]+"."+name.split('x')[3]+"."+name.split('x')[4]
-	f=open("/hosts/nodes","r")
+	f=open("/fairvpn/hosts/nodes","r")
 	listsnode=f.readlines()
 	x=listsnode[6:len(listsnode)-2]
 	print "the nodes are:\n"
@@ -179,8 +179,8 @@ tincup()
 #download topology
 os.system("rm topology.dot")
 #os.system("wget http://"+bootstrap+"/topology.dot -O topology.dot")
-os.system("telnet "+bootstrap+" 2004 > topology.dot")
-os.system("rsync -av rsync://"+bootstrap+"/fairvpn hosts/")
+os.system("/fairvpn/bin/telnet "+bootstrap+" 2004 > topology.dot")
+os.system("/fairvpn/bin/rsync -av rsync://"+bootstrap+"/fairvpn hosts/")
 G=nx.Graph()
 if os.path.getsize("topology.dot") == 0:
 
@@ -203,7 +203,7 @@ if Gdot.number_of_nodes() == 0:
 	os.system ("echo \"ConnectTo = "+bootstrapName+"\" >> tinc.conf ")
 	os.system (tinc_cmd)
 	time.sleep(5)
-	os.system("olsrd -f ./olsr.conf")
+	os.system("/fairvpn/bin/olsrd -f ./olsr.conf")
 	sys.exit(0)
 
 
@@ -217,7 +217,7 @@ if Gdot.number_of_nodes() <= fanout :
 		os.system ("echo \"ConnectTo = "+overlayip2name(ip)+"\" >> tinc.conf ")
 	os.system (tinc_cmd)
 	time.sleep(5)
-	os.system("olsrd -f ./olsr.conf")
+	os.system("/fairvpn/bin/olsrd -f ./olsr.conf")
 	sys.exit(0)
 	
 
@@ -312,5 +312,5 @@ for name in ConnectToNodes:
 	os.system ("echo \"ConnectTo = "+overlayip2name(name)+"\" >> tinc.conf ")
 os.system (tinc_cmd)
 time.sleep(5)
-os.system("olsrd -f ./olsr.conf")
+os.system("/fairvpn/bin/olsrd -f ./olsr.conf")
 sys.exit(0)
