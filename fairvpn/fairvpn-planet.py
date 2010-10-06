@@ -109,7 +109,7 @@ def average(values):
 
 def olsr_config():
 
-	f=open('olsr.conf','w')
+	f=open('/fairvpn/olsrd.conf','w')
 
 	config= """
 DebugLevel      0
@@ -172,7 +172,7 @@ LinkQualityMult default %.3f
 myOverlayIP = "10.%d.%d.%d" % (random.randint(1,254),random.randint(1,254),random.randint(1,254))
 print  "MYOVERLAY IP IS ",myOverlayIP
 #										da riaggiungere				#myName = ip2name(myOverlayIP)
-os.system("rm olsr.conf")
+os.system("rm /fairvpn/olsrd.conf")
 olsr_config()
 tincconfheader()
 fixnameandkey()
@@ -205,7 +205,7 @@ if Gdot.number_of_nodes() == 0:
 	os.system ("echo \"ConnectTo = "+bootstrapName+"\" >> tinc.conf ")
 	os.system (tinc_cmd)
 	time.sleep(5)
-	os.system("/fairvpn/bin/olsrd -f ./olsr.conf")
+	os.system("/fairvpn/bin/olsrd -f /fairvpn/olsrd.conf")
 	sys.exit(0)
 
 
@@ -219,7 +219,7 @@ if Gdot.number_of_nodes() <= fanout :
 		os.system ("echo \"ConnectTo = "+overlayip2name(ip)+"\" >> tinc.conf ")
 	os.system (tinc_cmd)
 	time.sleep(5)
-	os.system("/fairvpn/bin/olsrd -f ./olsr.conf")
+	os.system("/fairvpn/bin/olsrd -f /fairvpn/olsrd.conf")
 	sys.exit(0)
 	
 
@@ -314,5 +314,5 @@ for name in ConnectToNodes:
 	os.system ("echo \"ConnectTo = "+overlayip2name(name)+"\" >> tinc.conf ")
 os.system (tinc_cmd)
 time.sleep(5)
-os.system("/fairvpn/bin/olsrd -f ./olsr.conf")
+os.system("/fairvpn/bin/olsrd -f /fairvpn/olsrd.conf")
 sys.exit(0)
