@@ -16,7 +16,7 @@ cd ../../
 cd telnet
 tar -jxvf telnet-bsd-1.2.tar.bz2
 cd telnet-bsd-1.2
-./configure LDFLAGS=-static && make
+./configure && make
 cp telnet/telnet ../../bin/
 cd ../../
 cd tinc
