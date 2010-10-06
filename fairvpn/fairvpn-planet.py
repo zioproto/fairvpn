@@ -126,22 +126,22 @@ IpcConnect
 
 LinkQualityFishEye      0
 
-LoadPlugin         "olsrd_dot_draw.so.0.3"
+LoadPlugin         "/fairvpn/lib/olsrd_dot_draw.so.0.3"
 {
 	PlParam     "accept" "0.0.0.0"
 }
 
-LoadPlugin "olsrd_httpinfo.so.0.1"
+LoadPlugin "/fairvpn/lib/olsrd_httpinfo.so.0.1"
 {
     PlParam     "Net"    "0.0.0.0 0.0.0.0"
 }
 
-LoadPlugin "olsrd_txtinfo.so.0.1"
+LoadPlugin "/fairvpn/lib/olsrd_txtinfo.so.0.1"
 {
     PlParam     "Accept"   "0.0.0.0"
 }
 
-LoadPlugin "olsrd_nameservice.so.0.3"
+LoadPlugin "/fairvpn/lib/olsrd_nameservice.so.0.3"
 {
  	PlParam "name" "%s"
   	PlParam "hosts-file" "/etc/hosts"
