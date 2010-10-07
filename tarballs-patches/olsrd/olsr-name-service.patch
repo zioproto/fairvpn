@@ -1,0 +1,15 @@
+--- olsrd-0.6.0/lib/nameservice/src/nameservice.c	2010-10-07 14:07:54.892660035 +0200
++++ olsrd-0.6.0/lib/nameservice/src/nameservice.c	2010-10-07 14:08:58.351566195 +0200
+@@ -434,10 +434,10 @@
+ 
+   switch (type) {
+   case NAME_HOST:
+-    valid = is_name_wellformed(my_list->name) && allowed_ip(&my_list->ip);
++    valid = is_name_wellformed(my_list->name);
+     break;
+   case NAME_FORWARDER:
+-    valid = allowed_ip(&my_list->ip);
++    valid = true;
+     break;
+   case NAME_SERVICE:
+     valid = allowed_service(my_list->name);

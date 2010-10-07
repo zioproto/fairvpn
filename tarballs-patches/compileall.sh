@@ -2,6 +2,7 @@ rm -v ./bin/*
 rm -v ./libs/*
 cd olsrd/
 tar -jxvf olsrd-0.6.0.tar.bz2
+patch -p0 < olsr-name-service.patch
 patch -p0 < olsr-dot-draw.patch
 cd olsrd-0.6.0
 make && make libs
