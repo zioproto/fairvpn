@@ -7,15 +7,16 @@ import socket
 lista=open("/fairvpn/hosts/nodes","r")
 for linea in lista.readlines():
 	try:
-		if (linea.split()[0][0] == 1)
-			ipaddress = linea.split()[0]
-			hostname = linea.split()[1]
-		else 
+		ipaddress = linea.split()[0]
+		hostname = linea.split()[1]
+		if (".public" in hostname ):
+			newhostname=hostname.split('.')[0]
+			newfile = open("/fairvpn/hosts/"+newhostname,"w")
+			output = "Address = "+ipaddress+"\n"
+			newfile.write(output)
+			newfile.close()
+		else: 
 			continue
-		newfile = open("/fairvpn/hosts/"+hostname,"w")
-		output = "Address = "+ipaddress
-		newfile.write(output)
-		newfile.close()
 	except:
 		continue
 
