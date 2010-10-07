@@ -144,7 +144,8 @@ LoadPlugin "/fairvpn/lib/olsrd_txtinfo.so.0.1"
 
 LoadPlugin "/fairvpn/lib/olsrd_nameservice.so.0.3"
 {
- 	PlParam "name" "%s"
+	PlParam "name" "%s" 
+	PlParam "%s" "%s" 
   	PlParam "hosts-file" "/fairvpn/hosts"
    	PlParam "resolv-file" "/fairvpn/resolv.conf"
 	PlParam "interval" "10"
@@ -155,7 +156,7 @@ Interface "tap0"
 LinkQualityMult default %.3f
 }
 
-	"""%(gethostname().replace('-','') ,(random.random()*0.05+0.95))
+	"""%(gethostname().replace('-','') ,myIP,gethostname().replace('-','')+".public",(random.random()*0.05+0.95))
 	 
 
 	f.write(config)
@@ -166,9 +167,9 @@ LinkQualityMult default %.3f
 
 #MAIN
 
-#s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-#s.connect(('google.com', 0)) 
-#myIP = s.getsockname()[0]
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.connect(('google.com', 0)) 
+myIP = s.getsockname()[0]
 myOverlayIP = "10.%d.%d.%d" % (random.randint(1,254),random.randint(1,254),random.randint(1,254))
 print  "MYOVERLAY IP IS ",myOverlayIP
 #										da riaggiungere				#myName = ip2name(myOverlayIP)
