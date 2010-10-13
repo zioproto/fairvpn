@@ -10,6 +10,7 @@ import random
 import string
 from socket import gethostname;
 import time
+import urllib
 
 # Authors: Saverio Proto
 # This software is released under GPL3
@@ -167,9 +168,16 @@ LinkQualityMult default %.3f
 
 #MAIN
 
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.connect(('google.com', 0)) 
-myIP = s.getsockname()[0]
+#s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+#s.connect(('google.com', 0)) 
+#myIP = s.getsockname()[0]
+url = urllib.URLopener()
+resp = url.open('http://checkip.dyndns.org')
+html = resp.read()
+start = html.find("Address: ")+9
+end= html.find("</body>")
+myIP = html[start:end]
+
 myOverlayIP = "10.%d.%d.%d" % (random.randint(1,254),random.randint(1,254),random.randint(1,254))
 print  "MYOVERLAY IP IS ",myOverlayIP
 #										da riaggiungere				#myName = ip2name(myOverlayIP)
