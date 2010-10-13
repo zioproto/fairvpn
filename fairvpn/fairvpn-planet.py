@@ -179,6 +179,7 @@ end= html.find("</body>")
 myIP = html[start:end]
 
 myOverlayIP = "10.%d.%d.%d" % (random.randint(1,254),random.randint(1,254),random.randint(1,254))
+print "MY PUBLIC IP IS ", myIP
 print  "MYOVERLAY IP IS ",myOverlayIP
 #										da riaggiungere				#myName = ip2name(myOverlayIP)
 os.system("rm /fairvpn/olsrd.conf")
