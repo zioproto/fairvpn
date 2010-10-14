@@ -5,6 +5,13 @@ import random
 from threading import Thread
 #import time
 
+def generatepareto():
+        return random.paretovariate(1.2)
+
+def generatenumber():
+        return random.random()*5
+
+
 class schiavo(Thread):
 	def __init__ (self,ips,ipd):
 		Thread.__init__(self)
@@ -13,7 +20,8 @@ class schiavo(Thread):
 		self.status = -1
 	def run(self):
 		#time.sleep(2)
-		cmd = "ossh -l root "+self.ips+" \"iperf -c "+self.ipd+" -y C\" > outputmisure"
+		numK=int(generatepareto());
+		cmd = "ossh -l root "+self.ips+" \"iperf -c "+self.ipd+" -n "+str(numK)+"M -y C\" > outputmisure"
 		print cmd
 		#os.system(cmd)
 
@@ -40,14 +48,17 @@ for linea in lista.readlines():
 
 lista.close()
 
-print nodes
+#print nodes
 
 #example
 #ossh -l root 192.168.100.186 "iperf -c 192.168.100.17 -y C" > filetest	
 
 for nodo in nodes:
-	#print nodo +"AND"+ random.choice(nodes)
-	current = schiavo(nodo,random.choice(nodes))	
+	dest = random.choice(nodes)
+	while (dest == nodo):
+		dest = random.choice(nodes)
+	print "Start thread, source:\t" + nodo +"\tand destination:\t"+ dest+"\n"
+	current = schiavo(nodo,dest)	
 	current.start()
 
 print "All threads launched"
