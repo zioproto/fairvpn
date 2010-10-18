@@ -7,6 +7,22 @@ from threading import Thread
 import time
 import math as math
 
+def jain_index(x):
+
+	# x is dict.values()        
+        k=len(x)
+        sum1=0
+        sum2=0
+        i=0 
+        #sum1=math.fsum(x)
+        for i in range(k):
+                sum1=sum1+x[i]
+                sum2=sum2+math.pow(x[i],2)
+        sum1=math.pow(sum1,2)
+        sum2=k*sum2
+        ji = float(sum1/sum2)
+        return ji
+
 def average(values):
     """Computes the arithmetic mean of a list of numbers.
 
@@ -38,7 +54,7 @@ for k,v in connections.iteritems():
 	avdict[k] = theaverage
 	print "%s\t%s" % (k, theaverage)
 
-	
+print jain_index(avdict.values())	
 
 
 
