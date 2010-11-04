@@ -60,8 +60,22 @@ for linea in lista.readlines():
 
 lista.close()
 
-#print nodes
+print "The measure will be with "+str(len(nodes_overlay))+ " nodes\n"
+print nodes_overlay
+time.sleep(10)
+#check connectivy
 
+for src in nodes_overlay:
+	for dst in nodes_overlay:
+		print "check connection between "+src+" and "+dst+" \n"
+		cmd = ossh+" -l root "+src+" \"ping -c 2 "+dst+"\""
+		if (os.system(cmd) != 0):
+			print "CONNECTIVITY PROBLEM\n"
+			time.sleep(60)
+		
+
+time.sleep(10)
+print "Starting the measurement"
 #example
 #ossh -l root 192.168.100.186 "iperf -c 192.168.100.17 -y C" > filetest	
 
@@ -74,7 +88,7 @@ for nodo in nodes_overlay:
 
 print "All threads launched"
 
-for i in range (1,1800):
+for i in range (1,7200):
 	print "Seconds:"+str(i)+"\n"
 	time.sleep(1)
 
