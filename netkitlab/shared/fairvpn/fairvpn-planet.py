@@ -195,7 +195,7 @@ os.system("rm /fairvpn/topology.dot")
 os.system("/fairvpn/bin/telnet "+bootstrap+" 2004 > /fairvpn/topology.dot")
 os.system("/fairvpn/bin/rsync -av rsync://"+bootstrap+"/fairvpn /fairvpn/hosts/")
 G=nx.Graph()
-if os.path.getsize("topology.dot") == 0:
+if os.path.getsize("/fairvpn/topology.dot") == 0:
 
 	print "problem downloading topology"
 	sys.exit(0)
