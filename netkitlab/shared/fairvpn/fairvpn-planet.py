@@ -37,12 +37,12 @@ def tincup():
 	os.system("chmod +x tinc-up")
 
 def tincconfheader():
-	os.system("rm tinc.conf")
-	os.system("rm -rf hosts")
-	os.system("mkdir hosts")
-	os.system("echo \"Mode = switch\" > tinc.conf")
-	os.system("echo \"Name ="+gethostname().replace('-','')+"\" >> tinc.conf") 
-	os.system("echo \"TunnelServer = yes\" >> tinc.conf")
+	os.system("rm /fairvpn/tinc.conf")
+	os.system("rm -rf /fairvpn/hosts")
+	os.system("mkdir /fairvpn/hosts")
+	os.system("echo \"Mode = switch\" > /fairvpn/tinc.conf")
+	os.system("echo \"Name ="+gethostname().replace('-','')+"\" >> /fairvpn/tinc.conf") 
+	os.system("echo \"TunnelServer = yes\" >> /fairvpn/tinc.conf")
 	os.system("mkdir -p /usr/local/var/run/")
 		  	                          
 def name2ip(name):
