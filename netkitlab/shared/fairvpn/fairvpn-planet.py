@@ -26,23 +26,23 @@ from config import *
 
 def fixnameandkey():
 	#run after tinconfheader
-	os.system(tinc_cmd+""" --config=./ -K<<EOF
+	os.system(tinc_cmd+""" --config=/fairvpn -K<<EOF
 
 
 	EOF""")
 
 def tincup():
 	os.system("rm tinc-up")
-	os.system("echo \"ip link set dev tap0 up && ip a a dev tap0 "+myOverlayIP+"/8 broadcast 10.255.255.255\" > tinc-up")
-	os.system("chmod +x tinc-up")
+	os.system("echo \"ip link set dev tap0 up && ip a a dev tap0 "+myOverlayIP+"/8 broadcast 10.255.255.255\" > /fairvpn/tinc-up")
+	os.system("chmod +x /fairvpn/tinc-up")
 
 def tincconfheader():
-	os.system("rm tinc.conf")
-	os.system("rm -rf hosts")
-	os.system("mkdir hosts")
-	os.system("echo \"Mode = switch\" > tinc.conf")
-	os.system("echo \"Name ="+gethostname().replace('-','')+"\" >> tinc.conf") 
-	os.system("echo \"TunnelServer = yes\" >> tinc.conf")
+	os.system("rm /fairvpn/tinc.conf")
+	os.system("rm -rf /fairvpn/hosts")
+	os.system("mkdir /fairvpn/hosts")
+	os.system("echo \"Mode = switch\" > /fairvpn/tinc.conf")
+	os.system("echo \"Name ="+gethostname().replace('-','')+"\" >> /fairvpn/tinc.conf") 
+	os.system("echo \"TunnelServer = yes\" >> /fairvpn/tinc.conf")
 	os.system("mkdir -p /usr/local/var/run/")
 		  	                          
 def name2ip(name):
@@ -190,16 +190,16 @@ fixnameandkey()
 tincup()
 
 #download topology
-os.system("rm topology.dot")
+os.system("rm /fairvpn/topology.dot")
 #os.system("wget http://"+bootstrap+"/topology.dot -O topology.dot")
-os.system("/fairvpn/bin/telnet "+bootstrap+" 2004 > topology.dot")
+os.system("/fairvpn/bin/telnet "+bootstrap+" 2004 > /fairvpn/topology.dot")
 os.system("/fairvpn/bin/rsync -av rsync://"+bootstrap+"/fairvpn /fairvpn/hosts/")
 G=nx.Graph()
-if os.path.getsize("topology.dot") == 0:
+if os.path.getsize("/fairvpn/topology.dot") == 0:
 
 	print "problem downloading topology"
 	sys.exit(0)
-topologyfile = open("topology.dot")
+topologyfile = open("/fairvpn/topology.dot")
 
 Gdot=pgv.AGraph(string.join(topologyfile.readlines()[3:],''))
 
@@ -215,7 +215,7 @@ if Gdot.number_of_nodes() == 0:
 	#print "ConnectTo = ", bootstrapName, " tinc.conf"
 	os.system("/fairvpn/bin/olsrd -f /fairvpn/olsrd.conf")
 	time.sleep(5)
-	os.system ("echo \"ConnectTo = "+bootstrapName+"\" >> tinc.conf ")
+	os.system ("echo \"ConnectTo = "+bootstrapName+"\" >> /fairvpn/tinc.conf ")
 	os.system (tinc_cmd)
 	sys.exit(0)
 
@@ -227,7 +227,7 @@ if Gdot.number_of_nodes() <= fanout :
 		print "provo a connettermi al nodo"
 		print ip
 		#os.system ("echo \"Address = "+name2ip(name)+"\" > hosts/"+name)
-		os.system ("echo \"ConnectTo = "+overlayip2name(ip)+"\" >> tinc.conf ")
+		os.system ("echo \"ConnectTo = "+overlayip2name(ip)+"\" >> /fairvpn/tinc.conf ")
 	os.system("/fairvpn/bin/olsrd -f /fairvpn/olsrd.conf")
 	time.sleep(5)
 	os.system (tinc_cmd)
@@ -322,7 +322,7 @@ for i in range(fanout):
 print "Connect to selected nodes \n"
 for name in ConnectToNodes:
 	#os.system ("echo \"Address = "+name2ip(name)+"\" > hosts/"+name)
-	os.system ("echo \"ConnectTo = "+overlayip2name(name)+"\" >> tinc.conf ")
+	os.system ("echo \"ConnectTo = "+overlayip2name(name)+"\" >> /fairvpn/tinc.conf ")
 os.system("/fairvpn/bin/olsrd -f /fairvpn/olsrd.conf")
 time.sleep(5)
 os.system (tinc_cmd)
