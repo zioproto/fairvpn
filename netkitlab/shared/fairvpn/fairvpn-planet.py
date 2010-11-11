@@ -169,7 +169,7 @@ LinkQualityMult default %.3f
 #MAIN
 
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.connect(('google.com', 0)) 
+s.connect(('160.80.0.254', 0)) 
 myIP = s.getsockname()[0]
 
 #url = urllib.URLopener()
