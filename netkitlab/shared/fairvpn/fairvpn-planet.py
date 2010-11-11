@@ -33,7 +33,7 @@ def fixnameandkey():
 
 def tincup():
 	os.system("rm tinc-up")
-	os.system("echo \"ip link set dev tap0 up && ip a a dev tap0 "+myOverlayIP+"/8 broadcast 10.255.255.255\" > tinc-up")
+	os.system("echo \"ip link set dev tap0 up && ip a a dev tap0 "+myOverlayIP+"/8 broadcast 10.255.255.255\" > /fairvpn/tinc-up")
 	os.system("chmod +x tinc-up")
 
 def tincconfheader():
