@@ -67,11 +67,14 @@ time.sleep(10)
 
 for src in nodes_overlay:
 	for dst in nodes_overlay:
-		print "check connection between "+src+" and "+dst+" \n"
-		cmd = ossh+" -l root "+src+" \"ping -c 2 "+dst+"\""
-		if (os.system(cmd) != 0):
-			print "CONNECTIVITY PROBLEM\n"
-			time.sleep(60)
+		if dst != src:
+			print "check connection between "+src+" and "+dst+" \n"
+			#cmd = ossh+" -l root "+src+" \"ping -c 2 "+dst+"\""
+			cmd = ossh+" -l root "+src+" \"iperf -c "+dst+" -t 20 -y C \""
+			if (os.system(cmd) != 0):
+				print "CONNECTIVITY PROBLEM\n"
+				time.sleep(60)
+				sys.exit(0)
 		
 
 time.sleep(10)
