@@ -193,7 +193,7 @@ tincup()
 os.system("rm topology.dot")
 #os.system("wget http://"+bootstrap+"/topology.dot -O topology.dot")
 os.system("/fairvpn/bin/telnet "+bootstrap+" 2004 > topology.dot")
-os.system("/fairvpn/bin/rsync -av rsync://"+bootstrap+"/fairvpn hosts/")
+os.system("/fairvpn/bin/rsync -av rsync://"+bootstrap+"/fairvpn /fairvpn/hosts/")
 G=nx.Graph()
 if os.path.getsize("topology.dot") == 0:
 
