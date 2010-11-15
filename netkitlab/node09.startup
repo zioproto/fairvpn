@@ -1,9 +1,2 @@
 ip link set up dev eth0
 ip a a 160.80.0.9/24 dev eth0
-orig-tc qdisc add dev eth0 root handle 1: htb default 1
-orig-tc class add dev eth0 parent 1: classid 1:1 htb rate 1Mbit ceil 1Mbit
-orig-tc qdisc add dev eth0 parent 1:1 handle 2: pfifo limit 10
-/usr/local/bin/iperf -s -D
-/etc/init.d/ssh start
-chown root:root -R /root/
-chmod 700 -R /root/
