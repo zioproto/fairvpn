@@ -1,2 +1,7 @@
 ip link set up dev tap0
 ip a a 10.0.0.254/8 dev tap0 broadcast 10.255.255.255
+orig-tc qdisc add dev tap0 root handle 1: htb default 1
+orig-tc class add dev tap0 parent 1: classid 1:1 htb rate 1Mbit ceil 1Mbit
+orig-tc qdisc add dev tap0 parent 1:1 handle 2: prio bands 3
+orig-tc filter add dev tap0 parent 2: protocol ip prio 1 u32 match ip dport 698 0xffff flowid 2:1
+orig-tc filter add dev tap0 parent 2: protocol 0x0003 prio 2 u32 match u8 0x0 0x0 flowid 2:2

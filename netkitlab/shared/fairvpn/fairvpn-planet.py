@@ -32,9 +32,19 @@ def fixnameandkey():
 	EOF""")
 
 def tincup():
-	os.system("rm tinc-up")
+	os.system("rm /fairvpn/tinc-up")
 	os.system("echo \"ip link set dev tap0 up && ip a a dev tap0 "+myOverlayIP+"/8 broadcast 10.255.255.255\" > /fairvpn/tinc-up")
+
+	os.system("""
+echo -e \"orig-tc qdisc add dev tap0 root handle 1: htb default 1 \n
+orig-tc class add dev tap0 parent 1: classid 1:1 htb rate 1Mbit ceil 1Mbit \n
+orig-tc qdisc add dev tap0 parent 1:1 handle 2: prio bands 3 \n
+orig-tc filter add dev tap0 parent 2: protocol ip prio 1 u32 match ip dport 698 0xffff flowid 2:1 \n
+orig-tc filter add dev tap0 parent 2: protocol 0x0003 prio 2 u32 match u8 0x0 0x0 flowid 2:2 \">> /fairvpn/tinc-up	    """)
+
 	os.system("chmod +x /fairvpn/tinc-up")
+
+
 
 def tincconfheader():
 	os.system("rm /fairvpn/tinc.conf")
