@@ -288,10 +288,11 @@ for i in range(fanout):
 		#SUM Path len of the evaluating node, considering my already existing connections
 		for ip in pl_list:
 			#print "Evaluating NODE:",node, "TO NODE",ip,"MINS",pl_list[ip],mypl[ip],min(pl_list[ip],mypl[ip])
-			if (pldict[node] !=10000):
+			if (pldict[node] !=1000000):
 				pldict[node]=pldict[node]+min(pl_list[ip]+1,mypl[ip])
 				#print "pldic of ",node, "in for", pldict[node], ip
-		pldict[node]=1.0*pldict[node]/len(pldict)
+		if (pldict[node] != 1000000):
+			pldict[node]=1.0*pldict[node]/len(pldict)
 		#Calculate fc
 		fcdict[node] = float (1/(1 + math.exp( float(-(ncdict[node]- average(ncdict.values()))/alpha) )))
 		print "FC ",fcdict[node],node, "pldic ",pldict[node]
@@ -310,9 +311,9 @@ for i in range(fanout):
 				mypl[i]=min(mypl[i],fwdict[0][k][i]+1)
 			#print "MY CURRENT ROUTING TABLE",mypl
 			
-			pldict[k] = 10000
+			pldict[k] = 1000000
 			for i in pldict.iterkeys():
-				if (pldict[i] != 10000):
+				if (pldict[i] != 1000000):
 					pldict[i]=0 
 			break
 			
